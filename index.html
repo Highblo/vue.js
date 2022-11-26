@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>vueCDN</title>
+</head>
+<body>
+  <div id="app">
+    <!-- テキストのデータバインディングはマスタッシュ構文を使う -->
+    <p>{{ message }}</p>
+    <p>{{ count }}</p>
+    <p>{{ user.prefecture }}</p>
+    <p>{{ colors[1] }}</p>
+
+    <!-- 属性へのデータバインディングはv-bindディレクティブを使用する -->
+    <input type="text" v-bind:value="message">
+
+    <!-- 条件分岐はv-ifを使う -->
+    <p v-if="toggle">hello</p>
+
+    <!-- 繰り返し表示する場合はv-forを使う -->
+    <ol> <!-- 配列 -->
+      <li v-for="color in colors">{{ color }}</li>
+    </ol>
+    <ul> <!-- オブジェクト -->
+      <li v-for="(value, key) in user">
+       {{ key }}: {{ value }}
+      </li>
+    </ul>
+
+    <!-- イベントの処理はv-onを使う -->
+    <button v-on:click="onClick">現在の時間</button>
+    <p>{{ now }}</p>
+
+    <!-- 双方向性データバインディングはv-modelを使う -->
+    <p><input type="text" v-model="message"></p>
+    <p><input type="text" v-model="message"></p>
+    <p>{{ $data }}</p>
+    <!-- コンポーネント化 -->
+    <hello-component></hello-component>
+  </div>
+
+  <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
+  <script>
+    const app = Vue.createApp({
+      data: () => ({
+        message: "Hello Vue.js!",
+        count: 99,
+        user: {
+          lastName: "Yamada",
+          firstName: "Tarou",
+          prefecture: "Tokyo",
+          age: 23
+        },
+        colors: ["Red", "Green", "Blue"],
+        toggle: true,
+        now: "_"
+      }),
+      methods: {
+        onClick: function() {
+          this.now = new Date().toLocaleString();
+        }
+      }
+    });
+    app.component("hello-component", {
+      template: "<p>hello</p>"
+    });
+    app.mount("#app");
+  </script>
+</body>
+</html>
